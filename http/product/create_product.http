@@ -1,0 +1,11 @@
+POST http://localhost:5000/product
+Content-Type: application/json
+
+{
+    "name":"Bolo de banana",
+    "GTIN":"12345678901234",
+    "wheight":200.00,
+    "category":"Bolos",
+    "receipe":"85ba135f55e12684a8c0fc52"
+}
+
