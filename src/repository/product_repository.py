@@ -13,6 +13,12 @@ class ProductRepository:
             return Product.objects.get(id=product_id)
         except DoesNotExist:
             return None
+    
+    def find(self, **kwargs):
+        """Recupera um documento por qualquer campo,
+        ou conjunto de campos.
+        """
+        return Product.objects.aggregate([{"$match":kwargs}])
 
     def update(self, product_id: str, **kwargs):
         """Atualiza um produto existente pelo ID."""

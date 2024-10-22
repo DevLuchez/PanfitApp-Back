@@ -1,6 +1,8 @@
 from mongoengine import DoesNotExist
 from src.models.domain.item import Item
 
+from src.aggregation.match_pipeline import create_match_pipeline
+
 class ItemRepository:
     def create(self, item: Item):
         """Cria um novo item no banco de dados."""
@@ -13,6 +15,12 @@ class ItemRepository:
             return Item.objects.get(id=item_id)
         except DoesNotExist:
             return None
+        
+    def find(self, limit, **kwargs):
+        """Recupera um documento por qualquer campo,
+        ou conjunto de campos.
+        """
+        return Item.objects.aggregate(create_match_pipeline(limit=limit, **kwargs))
 
     def update(self, item_id: str, **kwargs):
         """Atualiza um item existente pelo ID."""
