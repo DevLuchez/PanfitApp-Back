@@ -2,16 +2,12 @@
     "category":"receitas de bolo",
     "items":[
         {
-            "id":"85ba135f55e12684a8c0fc52",
+            "id":"6717c72600c19be35b0d3ddd",
             "wheight":10.0
         },
         {
-            "id":"85ba135f55e12684a8c0fc50",
-            "wheight":30.0
-        },
-        {
-            "id":"85ba135f55e12684a8c0fc60",
-            "wheight":20.0
+            "id":"6717c72600c19be35b0d3ddd",
+            "wheight":10.0
         }
     ]
 }

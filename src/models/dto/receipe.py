@@ -12,6 +12,5 @@ class ReceipeDTO(BaseModel):
     verbose: Optional[bool] = Field(default=False)
 
     def to_mongoengine(self):
-        from src.models.domain.receipe import Receipe, ItemWheight
-        item_wheight = [ItemWheight(item=item['id'], wheight=item['wheight']) for item in self.items]
-        return Receipe(category=self.category, items=item_wheight)
+        from src.models.domain.receipe import Receipe
+        return Receipe(category=self.category)

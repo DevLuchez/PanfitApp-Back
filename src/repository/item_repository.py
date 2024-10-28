@@ -1,7 +1,7 @@
 from mongoengine import DoesNotExist
 from src.models.domain.item import Item
 
-from src.aggregation.match_pipeline import create_match_pipeline
+from aggregation.pipelines import create_match_pipeline
 
 class ItemRepository:
     def create(self, item: Item):
@@ -21,6 +21,10 @@ class ItemRepository:
         ou conjunto de campos.
         """
         return Item.objects.aggregate(create_match_pipeline(limit=limit, **kwargs))
+    
+    def find_by_pipeline(self, pipeline: list[dict]):
+        "Recupera documentos com pipeline dinamico"
+        return Item.objects(id__in=pipeline)
 
     def update(self, item_id: str, **kwargs):
         """Atualiza um item existente pelo ID."""

@@ -24,7 +24,7 @@ class Product(Document):
             "wheight":self.wheight,
             "category":self.category,
             "receipe":{
-                "id":self.receipe.id
+                "id":str(self.receipe.id)
             }
         }
 
