@@ -1,5 +1,6 @@
 from mongoengine import DoesNotExist
 from src.models.domain.receipe import Receipe, ItemWheight
+from src.models.domain.item import Item
 
 class ReceipeRepository:
     def create(self, receipe: Receipe) -> Receipe:
@@ -13,6 +14,9 @@ class ReceipeRepository:
             return Receipe.objects.get(id=receipe_id)
         except DoesNotExist:
             return None
+    
+    def get_all(self):
+        return Receipe.objects.all()
 
     def update(self, receipe_id: str, **kwargs):
         """Atualiza uma receita existente pelo ID."""

@@ -4,8 +4,6 @@ from bson import ObjectId
 from src.models.dto.receipe import ReceipeDTO
 from src.models.domain.receipe import ItemWheight
 
-from src.aggregation.pipelines import in_multiples_id_pipeline
-
 class ReceipeService:
     def __init__(self, receipe_repository, item_repository):
         self.receipe_repository = receipe_repository
@@ -43,6 +41,23 @@ class ReceipeService:
             raise HTTPException(status_code=500, detail='Erro interno do servidor')
         
         return receipe_db.to_dict()
+    
+    def get_all_receipes(self):
+        receipes_db = self.receipe_repository.get_all()
+
+        if not receipes_db:
+            raise HTTPException(status_code=404, detail=f'No receipes found')
+        
+        receipes = [receipe.to_dict() for receipe in receipes_db]
+        return receipes
+    
+    def get_receipe_id(self, receipe_id: str):
+        receipe = self.receipe_repository.get(receipe_id)
+        if not receipe:
+            raise HTTPException(status_code=404, detail=f'Product with ID: {receipe_id} not found')
+        
+        return receipe.to_dict()
+
 
 def create_receipe_service():
     from src.repository.receipe_repository import ReceipeRepository

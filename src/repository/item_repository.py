@@ -9,12 +9,16 @@ class ItemRepository:
         item.save()
         return item
 
-    def get(self, item_id: str):
+    def get_by_id(self, item_id: str):
         """Recupera um item pelo ID."""
         try:
             return Item.objects.get(id=item_id)
         except DoesNotExist:
             return None
+    
+    def get_all(self):
+        """Recupera todos os itens do banco"""
+        return Item.objects.all()
         
     def find(self, limit, **kwargs):
         """Recupera um documento por qualquer campo,

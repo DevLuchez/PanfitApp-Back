@@ -1,6 +1,8 @@
 from mongoengine import DoesNotExist
 from src.models.domain.product import Product
 
+from aggregation.pipelines import create_match_pipeline
+
 class ProductRepository:
     def create(self, product: Product):
         """Cria um novo produto no banco de dados."""
@@ -14,11 +16,15 @@ class ProductRepository:
         except DoesNotExist:
             return None
     
-    def find(self, **kwargs):
+    def get_all(self):
+        """Recupera todos os produtos"""
+        return Product.objects.all()
+    
+    def find(self, limit, **kwargs):
         """Recupera um documento por qualquer campo,
         ou conjunto de campos.
         """
-        return Product.objects.aggregate([{"$match":kwargs}])
+        return Product.objects.aggregate(create_match_pipeline(limit=limit, **kwargs))
 
     def update(self, product_id: str, **kwargs):
         """Atualiza um produto existente pelo ID."""

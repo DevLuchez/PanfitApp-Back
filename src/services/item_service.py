@@ -32,6 +32,24 @@ class ItemService:
             raise HTTPException(status_code=500, detail=f'Erro interno do servidor')
         
         return item_db.to_dict()
+    
+    def get_all_items(self):
+
+        items_db = self.item_repository.get_all()
+        if not items_db:
+            raise HTTPException(status_code=404, detail=f'No items found')
+        
+        item_dict = [item.to_dict() for item in items_db]
+        
+        return item_dict
+
+    def get_item_by_id(self, item_id: str):
+
+        item = self.item_repository.get_by_id(item_id)
+        if not item:
+            raise HTTPException(status_code=404, detail=f'Item not found')
+        
+        return item.to_dict()
          
 def create_item_service():
     from src.repository.item_repository import ItemRepository
