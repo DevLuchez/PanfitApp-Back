@@ -1,0 +1,25 @@
+version: '3.8'
+name: panfit-backend'
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - path: .env
+        required: true
+    environment:
+      - PYTHONPATH=/opt
+      - MAIN_FOLDER=/opt/
+      - MODE=development
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./backend/server:/opt/server
+    networks:
+      - panfit_network
+networks:
+  panfit_network:
+    driver: bridge
