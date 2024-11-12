@@ -8,12 +8,12 @@ RUN pip install -r requirements.txt
 
 FROM requirements
 
-COPY ./server /opt/server
+COPY ./src /opt/
 
-EXPOSE 8080
+EXPOSE 5000
 
 CMD [ \
   "sh", \
   "-c", \
-  "python /opt/server/main.py 0.0.0.0:8080 --no-threading --no-reload -Xfrozen_modules=off" \
+  "python /opt/app.py 0.0.0.0:5000 --no-threading --no-reload -Xfrozen_modules=off" \
 ]

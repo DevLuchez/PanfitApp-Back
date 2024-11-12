@@ -1,11 +1,10 @@
-version: '3.8'
-name: panfit-backend'
+name: 'panfit-backend'
 
 services:
   backend:
     container_name: backend
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     env_file:
       - path: .env
@@ -15,9 +14,9 @@ services:
       - MAIN_FOLDER=/opt/
       - MODE=development
     ports:
-      - "8083:8080"
+      - "8083:5000"
     volumes:
-      - ./backend/server:/opt/server
+      - ./src:/opt/src
     networks:
       - panfit_network
 networks:
