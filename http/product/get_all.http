@@ -1,2 +1,2 @@
-GET http://localhost:5000/product
+GET http://localhost:8083/product
 Content-Type: application/json

@@ -1,2 +1,2 @@
-GET http://localhost:5000/receipe
+GET http://localhost:8083/receipe
 Content-Type: application/json

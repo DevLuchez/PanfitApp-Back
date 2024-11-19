@@ -2,6 +2,8 @@ from mongoengine import DoesNotExist
 from src.models.domain.receipe import Receipe, ItemWheight
 from src.models.domain.item import Item
 
+from aggregation.pipelines import create_match_pipeline
+
 class ReceipeRepository:
     def create(self, receipe: Receipe) -> Receipe:
         """Cria uma nova receita no banco de dados."""
@@ -12,6 +14,18 @@ class ReceipeRepository:
         """Recupera uma receita pelo ID."""
         try:
             return Receipe.objects.get(id=receipe_id)
+        except DoesNotExist:
+            return None
+        
+    def find(self, limit, **kwargs):
+        """Recupera um documento por qualquer campo,
+        ou conjunto de campos.
+        """
+        return Receipe.objects.aggregate(create_match_pipeline(limit=limit, **kwargs))
+    
+    def get_by_product_id(self, product_id: str):
+        try:
+            return Receipe.objects.get(product_id=product_id)
         except DoesNotExist:
             return None
     

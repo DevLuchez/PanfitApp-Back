@@ -1,2 +1,2 @@
-GET http://localhost:5000/item/6717c72600c19be35b0d3ddd
+GET http://localhost:8083/item/673bcc498e33d8c8fef75dd2
 Content-Type: application/json

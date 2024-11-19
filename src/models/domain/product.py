@@ -80,7 +80,7 @@ class ProductMovement(Document):
             "observation": self.observation,
             "sale_price": float(self.sale_price) if self.sale_price else None
         }
-
+    
 class ProductRequest(Document):
     id = ObjectIdField(required=True, primary_key=True, default=lambda: ObjectId())
     product = ReferenceField("Product", required=True) 

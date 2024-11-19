@@ -1,2 +1,2 @@
-GET http://localhost:5000/receipe/67184d25c259ff355ec2b838
+GET http://localhost:8083/receipe/67184d25c259ff355ec2b838
 Content-Type: application/json

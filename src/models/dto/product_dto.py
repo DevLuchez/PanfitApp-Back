@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 
-from typing import Optional, Literal
+from typing import Optional, Literal, Union
+from types import NoneType
 
 from datetime import datetime
 
@@ -30,12 +31,18 @@ class ProductMovementDTO(BaseModel):
 
 class ProductionRequestDTO(BaseModel):
     product: str = Field(max_length=24)
-    quantity: int = Field(gt=0)
+    quantity: float = Field(gt=0)
     request_date: Optional[datetime] = None
     is_completed: Optional[bool] = False
 
     def to_mongoengine(self):
-        from src.models.domain.product import ProductionRequest
+        from src.models.domain.product import ProductRequest
         data = self.model_dump()
         data["request_date"] = data["request_date"] or datetime.now()
-        return ProductionRequest(**data)
+        return ProductRequest(**data)
+
+class ProductionRequestARGS(BaseModel):
+    #product: str = Field(max_length=24)
+    quantity: Optional[Union[int, NoneType]] = Field(gt=0, default=None)
+    request_date: Optional[datetime] = None
+    is_completed: Optional[bool] = False

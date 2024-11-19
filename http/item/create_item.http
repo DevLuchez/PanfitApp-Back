@@ -1,9 +1,9 @@
-POST http://localhost:5000/item
+POST http://localhost:8083/item
 Content-Type: application/json
 
 {
-    "name":"Bolacha maizena",
-    "GTIN":"09876543210987",
-    "wheight":100.00,
+    "name":"Bolacha agua e sal",
+    "GTIN":"53890432949328",
+    "wheight":500.00,
     "category":"Bolachas"
 }

@@ -32,7 +32,7 @@ class ItemRepository:
 
     def update(self, item_id: str, **kwargs):
         """Atualiza um item existente pelo ID."""
-        item = self.get(item_id)
+        item = Item.objects.get(id=item_id)
         if item:
             for key, value in kwargs.items():
                 setattr(item, key, value)
@@ -42,7 +42,7 @@ class ItemRepository:
 
     def delete(self, item_id: str):
         """Remove um item pelo ID."""
-        item = self.get(item_id)
+        item = Item.objects.get(id=item_id)
         if item:
             item.delete()
             return True

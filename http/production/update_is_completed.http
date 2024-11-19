@@ -1,0 +1,6 @@
+PUT http://localhost:8083/production/673bd8a06dc6a6d46d9cbef1
+Content-Type: application/json
+
+{
+    "is_completed":true
+}
