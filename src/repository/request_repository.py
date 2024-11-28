@@ -12,6 +12,12 @@ class ProductRequestRepository:
             return ProductRequest.objects.get(id=production_id)
         except DoesNotExist:
             return None
+    
+    def get(self, **kwargs):
+        try:
+            return ProductRequest.objects.get(**kwargs)
+        except DoesNotExist:
+            return None
 
     def create(self, product: ProductRequest):
         """Cria um novo produto no banco de dados."""

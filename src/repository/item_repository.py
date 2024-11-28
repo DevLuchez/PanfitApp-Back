@@ -16,6 +16,12 @@ class ItemRepository:
         except DoesNotExist:
             return None
     
+    def get(self, **kwargs):
+        try:
+            return Item.objects.get(**kwargs)
+        except DoesNotExist:
+            return None
+        
     def get_all(self):
         """Recupera todos os itens do banco"""
         return Item.objects.all()
@@ -36,7 +42,7 @@ class ItemRepository:
         if item:
             for key, value in kwargs.items():
                 setattr(item, key, value)
-            item.save()
+            item.save() 
             return item
         return None
 

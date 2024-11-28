@@ -25,7 +25,7 @@ class ReceipeRepository:
     
     def get_by_product_id(self, product_id: str):
         try:
-            return Receipe.objects.get(product_id=product_id)
+            return Receipe.objects.get(product=product_id)
         except DoesNotExist:
             return None
     

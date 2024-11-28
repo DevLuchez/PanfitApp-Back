@@ -36,6 +36,12 @@ def update_product_request(product_request_id, product_request: ProductionReques
         return JSONResponse(content={"error":"An error ocurred while updating production request"}, status_code=500)
     return JSONResponse(content={"data":"ok"}, status_code=200)
 
+@product_routes.post("/production/{product_request_id}/finalize")
+def finalize_production(product_request_id):
+    from src.services.product_service import product_service
+    response = product_service.finalize_product_request(product_request_id)
+    return JSONResponse(content={"data":response}, status_code=200)
+
 @product_routes.get("/production")
 def get_all_production_request():
     from src.services.product_service import product_service

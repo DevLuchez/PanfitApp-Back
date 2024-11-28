@@ -9,15 +9,15 @@ class ItemService:
 
     def create_item(self, item_dto: ItemDTO):
 
-        existing_item = list(self.item_repository.find(limit=1, GTIN=item_dto.GTIN))
+        existing_item = self.item_repository.get(GTIN=item_dto.GTIN)
 
         print(existing_item)
         
         if existing_item:
 
             updated_item = self.item_repository.update(
-                item_id=existing_item[0]["_id"], 
-                wheight=existing_item[0]["wheight"]+item_dto.wheight,
+                item_id=existing_item.id, 
+                stock_wheight=existing_item.stock_wheight+item_dto.wheight,
                 updated_at=datetime.now()
             )
 

@@ -1,0 +1,2 @@
+POST http://localhost:8083/production/6747b6bfe42187a905860efe/finalize
+Content-Type: application/json

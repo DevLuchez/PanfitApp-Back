@@ -16,11 +16,22 @@ from datetime import datetime
 class Product(Document):
     id = ObjectIdField(required=True, primary_key=True, default=lambda: ObjectId())
     name = StringField(required=True, max_length=140)
-    wheight = FloatField(min_value=0)
+    wheight = FloatField(required=True, min_value=0)
+    stock_wheight = FloatField(required=True, min_value=0, default=0)
     category = StringField(required=True)
     receipe = ReferenceField("Receipe", required=True)
+    sale_price = DecimalField(min_value=0, precision=2, required=True)
 
-    meta = {"collection":"panfit_products"}
+
+    meta = {
+        "collection": "panfit_products",
+        "indexes": [
+            {
+                "fields": ["name"],
+                "unique": True, 
+            }
+        ]
+    }
 
     def to_dict(self, verbose=False):
         product_dict = {
