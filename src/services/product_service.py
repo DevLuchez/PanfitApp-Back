@@ -63,6 +63,27 @@ class ProductService:
         
         return request_db.to_dict()
     
+    def get_production_request(self, product_request_args: ProductionRequestARGS):
+
+        if product_request_args is not None:
+            request_args = product_request_args.model_dump(exclude_unset=True)
+        else:
+            request_args = None
+        
+        if request_args:
+            production_db = self.request_repository.get_by_args(**request_args)
+        else:
+            production_db = self.request_repository.get_all()
+
+        if not production_db:
+            raise HTTPException(status_code=404, detail=f'Production Requests not found')
+        
+        if len(production_db) > 0:
+            productions = [production.to_dict() for production in production_db]
+        else:
+            productions = production_db.to_dict()
+
+        return productions
 
     #TODO: TERMINAR ISSO DAQUI
     def update_product_request(self, product_request_id, product_request: ProductionRequestARGS):

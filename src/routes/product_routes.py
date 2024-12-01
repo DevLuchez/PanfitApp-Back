@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends, Query
 from fastapi.responses import JSONResponse
 
 from src.models.dto.product_dto import ProductDTO, ProductionRequestDTO, ProductionRequestARGS
+
+from typing import Annotated
 
 product_routes = APIRouter()
 
@@ -43,7 +45,7 @@ def finalize_production(product_request_id):
     return JSONResponse(content={"data":response}, status_code=200)
 
 @product_routes.get("/production")
-def get_all_production_request():
+def get_all_production_request(production_args: Annotated[ProductionRequestARGS, Query()]):
     from src.services.product_service import product_service
-    products = product_service.get_all_product_request()
-    return JSONResponse(content={'data':products}, status_code=200)
+    productions = product_service.get_production_request(production_args)
+    return JSONResponse(content={'data':productions}, status_code=200)

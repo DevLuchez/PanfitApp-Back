@@ -103,7 +103,7 @@ class ProductRequest(Document):
     )
     
     meta = {
-        "collection": "panfit_production_requests",
+        "collection": "panfit_production",
         "indexes": [
             "request_date",
             "product",
