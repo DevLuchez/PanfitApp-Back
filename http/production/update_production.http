@@ -1,6 +1,6 @@
-PUT http://localhost:8083/production/674cbd5001cd955dffd8fb19
+PUT http://localhost:8083/production/674cc108e18a070e9c64e1ce
 Content-Type: application/json
 
 {
-    "status":"em_produção"
+    "status":"em_producao"
 }

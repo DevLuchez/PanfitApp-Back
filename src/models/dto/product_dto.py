@@ -34,7 +34,7 @@ class ProductionRequestDTO(BaseModel):
     product: str = Field(max_length=24)
     quantity: float = Field(gt=0)
     request_date: Optional[datetime] = None
-    status: Optional[Literal["produzido", "não produzido", "em_produção"]] = None
+    status: Optional[Literal["produzido", "nao_produzido", "em_producao"]] = None
 
     def to_mongoengine(self):
         from src.models.domain.product import ProductRequest
@@ -45,4 +45,4 @@ class ProductionRequestDTO(BaseModel):
 class ProductionRequestARGS(BaseModel):
     #product: str = Field(max_length=24)
     quantity: Optional[Union[int, NoneType]] = Field(gt=0, default=None)
-    status: Optional[Literal["produzido", "não produzido", "em_produção"]] = None
+    status: Optional[Literal["produzido", "nao_produzido", "em_producao"]] = None

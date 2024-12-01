@@ -100,8 +100,8 @@ class ProductRequest(Document):
     quantity = IntField(required=True, min_value=1)
     request_date = DateTimeField(default=datetime.now())
     status = StringField(
-        choices=["produzido", "não produzido", "em_produção"],
-        default="não produzido"
+        choices=["produzido", "nao_produzido", "em_producao"],
+        default="nao_produzido"
     )
     
     meta = {
@@ -126,7 +126,7 @@ class ProductRequest(Document):
         }
 
     def set_status(self, new_status):
-        if new_status not in ["produzido", "não produzido", "em_produção"]:
+        if new_status not in ["produzido", "nao_produzido", "em_producao"]:
             raise ValueError("Invalid status")
         self.status = new_status
         self.save()
