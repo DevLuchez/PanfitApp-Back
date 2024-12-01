@@ -85,22 +85,23 @@ class ProductService:
 
         return productions
 
-    #TODO: TERMINAR ISSO DAQUI
-    def update_product_request(self, product_request_id, product_request: ProductionRequestARGS):
-        production = self.request_repository.update(product_request_id, **product_request.model_dump())
+    def update_product_request(self, product_request_id, product_request_args: ProductionRequestARGS):
 
-        production = self.request_repository.get(product_request_id)
+        production = self.request_repository.get_by_id(product_request_id)
 
         if not production:
             raise HTTPException(status_code=404, detail=f'Production Request with ID: {product_request_id} not found')
         
-        receipe = self.receipe_repository.get_by_product_id(production.product)
+        if production.status == "produzido" and product_request_args.status != "produzido":
+            raise HTTPException(status_code=409, detail=f'Production with status: produzido cannot be changed')
+          
+        production = self.request_repository.update(
+            product_request_id, 
+            **product_request_args.model_dump(exclude_unset=True)
+        )
 
-        if not receipe:
-            raise HTTPException(status_code=404, detail=f"Receipe not found")
-        
-        for item in receipe.items:
-            item_db = self.item_repository.get(item.id)
+        if not production:
+            return False
 
         return True
 

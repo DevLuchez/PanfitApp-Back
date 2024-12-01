@@ -32,9 +32,9 @@ def create_product_request(product: ProductionRequestDTO):
     return JSONResponse(content={"data":product_}, status_code=201)
 
 @product_routes.put("/production/{product_request_id}")
-def update_product_request(product_request_id, product_request: ProductionRequestARGS):
+def update_product_request(product_request_id, production_args: ProductionRequestARGS):
     from src.services.product_service import product_service
-    if not product_service.update_product_request(product_request_id, product_request):
+    if not product_service.update_product_request(product_request_id, production_args):
         return JSONResponse(content={"error":"An error ocurred while updating production request"}, status_code=500)
     return JSONResponse(content={"data":"ok"}, status_code=200)
 

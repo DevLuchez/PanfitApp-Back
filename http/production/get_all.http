@@ -1,3 +1,3 @@
-GET http://localhost:8083/production?quantity=6&status=não%20produzido
+GET http://localhost:8083/production
 Content-Type: application/json
 

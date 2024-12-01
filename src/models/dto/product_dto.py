@@ -45,5 +45,4 @@ class ProductionRequestDTO(BaseModel):
 class ProductionRequestARGS(BaseModel):
     #product: str = Field(max_length=24)
     quantity: Optional[Union[int, NoneType]] = Field(gt=0, default=None)
-    request_date: Optional[datetime] = None
     status: Optional[Literal["produzido", "não produzido", "em_produção"]] = None
