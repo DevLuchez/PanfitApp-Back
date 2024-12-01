@@ -105,8 +105,6 @@ class ProductService:
 
         return True
 
-
-    #TODO: registrar produtos com novo campo stock_wheigth
     def finalize_product_request(self, request_id: str):
         db = get_db()  # Obtém a conexão com o banco
         with db.client.start_session() as session:
@@ -205,8 +203,13 @@ class ProductService:
                     "updated_product_stock": new_product_stock_wheight,
                 }
 
+            except HTTPException as e:
+                raise e
             except Exception as e:
-                raise HTTPException(status_code=e.status_code, detail=f"Error finalizing production request: {e.detail}")
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Error processing production: {str(e)}"
+                )
 
 def create_product_service():
     from src.repository.product_repository import ProductRepository

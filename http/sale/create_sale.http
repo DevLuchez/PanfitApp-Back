@@ -1,0 +1,12 @@
+POST http://localhost:8083/sale
+Content-Type: application/json
+
+{
+  "products": [
+    {
+      "id": "674cb24d6a73045e04b64789",
+      "quantity": 2
+    }
+  ],
+  "payment_type": "pix"
+}

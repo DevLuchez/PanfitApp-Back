@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from src.routes.receipe_routes import receipe_routes
 from src.routes.product_routes import product_routes
 from src.routes.item_routes import item_routes
+from src.routes.sale_routes import sale_routes
 
 from src.extensions import database
 
@@ -11,6 +12,7 @@ def create_app():
     app.include_router(item_routes)
     app.include_router(product_routes)
     app.include_router(receipe_routes)
+    app.include_router(sale_routes)
 
     database.init_app(app)
 

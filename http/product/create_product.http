@@ -2,10 +2,10 @@ POST http://localhost:8083/product
 Content-Type: application/json
 
 {
-    "name":"Bolo de Batata",
-    "wheight":200.00,
+    "name":"Bolo de Tapioca",
+    "wheight":500.00,
     "category":"Bolos",
     "receipe":"674cb132b818139c23d44e86",
-    "sale_price":27.40
+    "sale_price":154.31
 }
 

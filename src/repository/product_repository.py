@@ -25,6 +25,10 @@ class ProductRepository:
         ou conjunto de campos.
         """
         return Product.objects.aggregate(create_match_pipeline(limit=limit, **kwargs))
+    
+    def find_by_pipeline(self, pipeline: list[dict]):
+        "Recupera documentos com pipeline dinamico"
+        return Product.objects(id__in=pipeline)
 
     def update(self, product_id: str, **kwargs):
         """Atualiza um produto existente pelo ID."""
