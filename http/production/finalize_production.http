@@ -1,2 +1,2 @@
-POST http://localhost:8083/production/6747b6bfe42187a905860efe/finalize
+POST http://localhost:8083/production/674cb7d2386cb8e2dfe60f0f/finalize
 Content-Type: application/json

@@ -39,6 +39,8 @@ class Product(Document):
             "name":self.name,
             "wheight":self.wheight,
             "category":self.category,
+            "sale_price":float(self.sale_price),
+            "stock_wheight":self.stock_wheight,
             "receipe":{
                 "id":str(self.receipe.id)
             }

@@ -5,16 +5,12 @@ Content-Type: application/json
     "category":"receitas de bolo",
     "items":[
         {
-            "id":"85ba135f55e12684a8c0fc52",
+            "id":"674c8a98e4849ec3ff666ac7",
             "wheight":10.0
         },
         {
-            "id":"85ba135f55e12684a8c0fc50",
+            "id":"674cb09bb818139c23d44e85",
             "wheight":30.0
-        },
-        {
-            "id":"85ba135f55e12684a8c0fc60",
-            "wheight":20.0
         }
     ]
 }

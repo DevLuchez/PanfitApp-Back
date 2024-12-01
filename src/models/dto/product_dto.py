@@ -9,7 +9,8 @@ class ProductDTO(BaseModel):
     name: str = Field(max_length=140)
     wheight: float = Field(gt=0)
     category: str = Field(max_length=140)
-    receipe:str = Field(max_length=24)
+    receipe: str = Field(max_length=24)
+    sale_price: float = Field(ge=0)
 
     def to_mongoengine(self):
         from src.models.domain.product import Product

@@ -5,6 +5,7 @@ Content-Type: application/json
     "name":"Bolo de Batata",
     "wheight":200.00,
     "category":"Bolos",
-    "receipe":"67184d25c259ff355ec2b838"
+    "receipe":"674cb132b818139c23d44e86",
+    "sale_price":27.40
 }
 

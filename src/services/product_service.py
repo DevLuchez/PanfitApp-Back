@@ -108,10 +108,9 @@ class ProductService:
     #TODO: registrar produtos com novo campo stock_wheigth
     def finalize_product_request(self, request_id: str):
         db = get_db()  # Obtém a conexão com o banco
-        with db.client.start_session() as session:  # Inicia uma sessão
+        with db.client.start_session() as session:
             try:
-                with session.start_transaction():  # Inicia uma transação
-                    # Busca a requisição de produção
+                with session.start_transaction(): 
                     production_request = self.request_repository.get(id=request_id)
                     if not production_request:
                         raise HTTPException(
@@ -119,9 +118,9 @@ class ProductService:
                             detail=f"Production request with ID: {request_id} not found"
                         )
 
-                    if production_request.is_completed:
+                    if production_request.status == "produzido":
                         raise HTTPException(
-                            status_code=400,
+                            status_code=409,
                             detail=f"Production request with ID: {request_id} is already completed"
                         )
 
@@ -140,76 +139,73 @@ class ProductService:
                             status_code=404,
                             detail=f"Recipe for product ID: {product.id} not found"
                         )
-
-                    # Itera sobre os itens da receita e verifica o estoque
-                    for _ in range(production_request.quantity):  # Para cada unidade a ser produzida
-                        for recipe_item in recipe.items:
-                            ingredient = self.item_repository.get_by_id(recipe_item.item.id)
-                            if not ingredient:
-                                raise HTTPException(
-                                    status_code=404,
-                                    detail=f"Ingredient with ID: {recipe_item.item.id} not found"
-                                )
-
-                            if ingredient.stock_wheight < recipe_item.wheight:
-                                raise HTTPException(
-                                    status_code=400,
-                                    detail=(
-                                        f"Insufficient stock for ingredient ID: {recipe_item.id}. "
-                                        f"Required: {recipe_item.wheight}, Available: {ingredient.stock_wheight}"
-                                    )
-                                )
-
-                            # Atualiza o estoque do ingrediente
-                            new_stock_wheight = ingredient.stock_wheight - recipe_item.wheight
-                            self.item_repository.update(
-                                ingredient.id,
-                                stock_wheight=new_stock_wheight,
+                    
+                    for recipe_item in recipe.items:
+                        ingredient = self.item_repository.get_by_id(recipe_item.item.id)
+                        if not ingredient:
+                            raise HTTPException(
+                                status_code=404,
+                                detail=f"Ingredient with ID: {recipe_item.item.id} not found"
                             )
 
-                            # Registra o movimento do item
-                            item_movement = ItemMovement(
-                                item=ingredient,
-                                movement_type='saida',
-                                quantity=recipe_item.wheight,
-                                movement_date=datetime.now(),
-                                observation=f"Utilizado na produção do produto {product.name} (ID: {product.id})"
+                        if ingredient.stock_wheight < (recipe_item.wheight * production_request.quantity):
+                            raise HTTPException(
+                                status_code=409,
+                                detail=(
+                                    f"Insufficient stock for ingredient ID: {recipe_item.id}. "
+                                    f"Required: {recipe_item.wheight * production_request.quantity}, Available: {ingredient.stock_wheight}"
+                                )
                             )
-                            item_movement.save()
 
-                    # Atualiza o estoque do produto
-                    new_product_stock_wheight = product.stock_wheight + production_request.wheight
-                    self.product_repository.update(
-                        product.id,
-                        stock_weight=new_product_stock_wheight,
-                    )
+                        # Atualiza o estoque do ingrediente
+                        new_stock_wheight = ingredient.stock_wheight - (recipe_item.wheight * production_request.quantity)
+                        self.item_repository.update(
+                            ingredient.id,
+                            stock_wheight=new_stock_wheight,
+                        )
 
-                    # Registra o movimento do produto
-                    product_movement = ProductMovement(
-                        product=product,
-                        movement_type='entrada',
-                        quantity=production_request.wheight,
-                        movement_date=datetime.now(),
-                        observation=f"Produção concluída (ID da requisição: {request_id})"
-                    )
-                    product_movement.save()
+                        # Registra o movimento do item
+                        item_movement = ItemMovement(
+                            item=ingredient,
+                            movement_type='saida',
+                            quantity=recipe_item.wheight,
+                            movement_date=datetime.now(),
+                            observation=f"Utilizado na produção do produto {product.name} (ID: {product.id})"
+                        )
+                        item_movement.save()
 
-                    # Atualiza o status da requisição de produção
-                    self.request_repository.update(
-                        production_request.id,
-                        is_completed=True,
-                    )
+                # Atualiza o estoque do produto
+                new_product_stock_wheight = product.stock_wheight + (product.wheight * production_request.quantity)
+                self.product_repository.update(
+                    product.id,
+                    stock_wheight=new_product_stock_wheight,
+                )
 
-                    # Finaliza a transação
-                    return {
-                        "message": "Production request finalized successfully",
-                        "product_id": str(product.id),
-                        "updated_product_stock": new_product_stock_wheight,
-                    }
+                # Registra o movimento do produto
+                product_movement = ProductMovement(
+                    product=product,
+                    movement_type='entrada',
+                    quantity=product.wheight,
+                    movement_date=datetime.now(),
+                    observation=f"Produção concluída (ID da requisição: {request_id})"
+                )
+                product_movement.save()
+
+                # Atualiza o status da requisição de produção
+                self.request_repository.update(
+                    production_request.id,
+                    status='produzido',
+                )
+
+                # Finaliza a transação
+                return {
+                    "message": "Production request finalized successfully",
+                    "product_id": str(product.id),
+                    "updated_product_stock": new_product_stock_wheight,
+                }
 
             except Exception as e:
-                session.abort_transaction()
-                raise HTTPException(status_code=500, detail=f"Error finalizing production request: {str(e)}")
+                raise HTTPException(status_code=e.status_code, detail=f"Error finalizing production request: {e.detail}")
 
 def create_product_service():
     from src.repository.product_repository import ProductRepository

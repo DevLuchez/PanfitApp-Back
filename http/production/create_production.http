@@ -2,6 +2,6 @@ POST http://localhost:8083/production
 Content-Type: application/json
 
 {
-    "product":"674912baa2d83b5f86dd55ec",
-    "quantity":2
+    "product":"674cb24d6a73045e04b64789",
+    "quantity":5
 }
