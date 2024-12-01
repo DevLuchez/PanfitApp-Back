@@ -5,5 +5,6 @@ Content-Type: application/json
     "name":"Bolacha agua e sal",
     "GTIN":"53890432949328",
     "wheight":500.00,
-    "category":"Bolachas"
+    "category":"Bolachas",
+    "quantity":3
 }

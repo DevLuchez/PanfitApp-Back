@@ -17,7 +17,7 @@ class ItemService:
 
             updated_item = self.item_repository.update(
                 item_id=existing_item.id, 
-                stock_wheight=existing_item.stock_wheight+item_dto.wheight,
+                stock_wheight=existing_item.stock_wheight+(item_dto.wheight*item_dto.quantity),
                 updated_at=datetime.now()
             )
 
@@ -26,7 +26,10 @@ class ItemService:
             
             return updated_item.to_dict()
 
-        item_db = self.item_repository.create(item_dto.to_mongoengine())
+        item = item_dto.to_mongoengine()
+        item.stock_wheight = item_dto.wheight*item_dto.quantity
+
+        item_db = self.item_repository.create(item)
 
         if not item_db:
             raise HTTPException(status_code=500, detail=f'Erro interno do servidor')

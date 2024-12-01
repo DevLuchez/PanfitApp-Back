@@ -94,16 +94,20 @@ class ProductMovement(Document):
     
 class ProductRequest(Document):
     id = ObjectIdField(required=True, primary_key=True, default=lambda: ObjectId())
-    product = ReferenceField("Product", required=True) 
+    product = ReferenceField("Product", required=True)
     quantity = IntField(required=True, min_value=1)
     request_date = DateTimeField(default=datetime.now())
-    is_completed = BooleanField(default=False)
+    status = StringField(
+        choices=["produzido", "não produzido", "em_produção"],
+        default="não produzido"
+    )
+    
     meta = {
         "collection": "panfit_production_requests",
         "indexes": [
             "request_date",
             "product",
-            "is_completed"
+            "status"
         ]
     }
 
@@ -116,9 +120,11 @@ class ProductRequest(Document):
             },
             "quantity": self.quantity,
             "request_date": self.request_date.isoformat(),
-            "is_completed": self.is_completed
+            "status": self.status
         }
 
-    def complete_request(self):
-        self.is_completed = True
+    def set_status(self, new_status):
+        if new_status not in ["produzido", "não produzido", "em_produção"]:
+            raise ValueError("Invalid status")
+        self.status = new_status
         self.save()

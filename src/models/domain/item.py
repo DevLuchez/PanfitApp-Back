@@ -18,7 +18,7 @@ class Item(Document):
     GTIN = StringField(required=False, max_length=14)
     wheight = FloatField(min_value=0)
     category = StringField(required=True)
-    stock_wheight = FloatField(min_value=0)
+    stock_wheight = FloatField(required=True, min_value=0, default=0)
 
     meta = {"collection":"panfit_items"}
 
@@ -28,7 +28,8 @@ class Item(Document):
             "name":self.name,
             "GTIN":self.GTIN,
             "wheight":self.wheight,
-            "category":self.category
+            "category":self.category,
+            "stock_wheight":self.stock_wheight
         }
 
 class ItemMovement(Document):

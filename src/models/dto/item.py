@@ -7,6 +7,7 @@ class ItemDTO(BaseModel):
     GTIN: str = Field(min_length=14, max_length=14)
     wheight: float = Field(gt=0)
     category: str = Field(max_length=140)
+    quantity: int = Field(gt=0)
 
     #@field_validator('GTIN')
     #def validate_gtin_field(cls, gtin: str) -> str:
@@ -16,13 +17,19 @@ class ItemDTO(BaseModel):
     
     def to_mongoengine(self):
         from src.models.domain.item import Item
-        return Item(**self.model_dump())
+        item = self.model_dump()
+
+        if item.get('quantity'):
+            del item['quantity']
+
+        return Item(**item)
 
 class ItemArgs(BaseModel):
     name: Optional[str] = Field(max_length=140)
     GTIN: str = Field(min_length=14, max_length=14)
     wheight: float = Field(gt=0)
     category: str = Field(max_length=140)
+    stock_wheight: float = Field(gt=0)
 
     #@field_validator('GTIN')
     #def validate_gtin_field(cls, gtin: str) -> str:
