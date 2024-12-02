@@ -1,0 +1,2 @@
+GET http://localhost:8083/product/674d4b71f9701a6cea0093f9
+Content-Type: application/json

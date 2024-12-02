@@ -43,7 +43,7 @@ class ProductService:
         return products
     
     def get_product_by_id(self, product_id: str):
-        product = self.product_repository.get_by_id(product_id)
+        product = self.product_repository.get(product_id)
         if not product:
             raise HTTPException(status_code=404, detail=f'Product with ID: {product_id} not found')
         
