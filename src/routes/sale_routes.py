@@ -19,7 +19,7 @@ def create_sale(sale: SaleDTO):
     return JSONResponse(content={"data": sale_record}, status_code=201)
 
 @sale_routes.get("/sale")
-def create_sale(sale_args: Annotated[SaleArgs, Query()]):
+def get_sales(sale_args: Annotated[SaleArgs, Query()]):
     """
     Retorna todas as vendas
     """
